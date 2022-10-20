@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabalho</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        * {
+            font-family: 'Amaranth', 'Candara', Arial, sans-serif;
+
+        }
+
+        html,
+        body {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            font-size: 12pt;
+            line-height: 18pt;
+            color: #444;
+        }
+
+        body>div {
+            background: whitesmoke;
+            margin: 3%;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        div>button {
+            margin-top: 10px;
+        }
+
+        div>table {
+            table-layout: auto;
+            width: 100%;
+        }
+
+        td {
+            border: 1px solid blue;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <label>Cadastrar Alunos.</label>
+
+        <div class="row">
+            <div class="col">
+                <label>Nome</label>
+                <input id="inp-nome" type="text" class="form-control">
+            </div>
+            <div class="col">
+                <label>RA</label>
+                <input id="inp-ra" type="number" class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Idade</label>
+                <input id="inp-idade" type="number" class="form-control">
+            </div>
+            <div class="col">
+                <label>Média</label>
+                <input id="inp-media" type="number" class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Sexo</label>
+                <select id="inp-sexo" class="form-control">
+                    <option>(selecione)</option>
+                    <option id="M">Masculino</option>
+                    <option id="F">Feminino</option>
+                </select>
+                <label>Resultado</label>
+                <select id="inp-resultado" class="form-control">
+                    <option>(selecione)</option>
+                    <option id="A">Aprovado</option>
+                    <option id="R">Reprovado</option>
+                </select>
+            </div>
+            <div class="d-grid gap-2 d-md-block">
+                <button class="btn btn-primary" type="button" id="pronto">Pronto</button>
+
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary btn-lg" id="btn-alunos">Relatório de Alunos em ordem crescente
+            por Nome.</button>
+        <button type="button" class="btn btn-primary btn-lg" id="btn-alunos-ra">Relatório de Alunos em ordem decrescente
+            por RA.</button>
+        <button type="button" class="btn btn-primary btn-lg" id="btn-alunos-aprovados">Relatório de Alunos em ordem
+            crescente por Nome, apenas dos
+            Aprovados.</button>
+        <button type="button" class="btn btn-primary btn-lg" id="btn-encerrar">Encerrar.</button>
+    </div>
+
+    <div>
+        <label>Relatório</label>
+        <table id="table" class="table table-bordered border-primary">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>RA</th>
+                    <th>Idade</th>
+                    <th>Média</th>
+                    <th>Sexo</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+
+            <tbody id="conteudo-dinamico1">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <label>Relatório de Alunos em ordem decrescente por Nome.</label>
+        <table id="table" class="table table-bordered border-primary">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>RA</th>
+                    <th>Idade</th>
+                    <th>Média</th>
+                    <th>Sexo</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+
+            <tbody id="conteudo-dinamico2">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <label>Relatório de Alunos em ordem crescente por RA.</label>
+        <table id="table" class="table table-bordered border-primary">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>RA</th>
+                    <th>Idade</th>
+                    <th>Média</th>
+                    <th>Sexo</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+
+            <tbody id="conteudo-dinamico3">
+
+            </tbody>
+        </table>
+    </div>
+
+
+    <div>
+        <label>Relatório de Alunos em ordem decrescente por Nome, apenas dos Aprovados.</label>
+        <table id="table" class="table table-bordered border-primary">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>RA</th>
+                    <th>Idade</th>
+                    <th>Média</th>
+                    <th>Sexo</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+
+            <tbody id="conteudo-dinamico4">
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const btnPronto = document.getElementById('pronto');
+        const btnAlunos = document.getElementById('btn-alunos');
+        const btnAlunosRA = document.getElementById('btn-alunos-ra');
+        const btnAlunosAprovados = document.getElementById('btn-alunos-aprovados');
+        const btnEncerrar = document.getElementById('btn-encerrar');
+
+        const inpNome = document.getElementById('inp-nome');
+        const inpRA = document.getElementById('inp-ra');
+        const inpIdade = document.getElementById('inp-idade');
+        const inpMedia = document.getElementById('inp-media');
+        const inpSexo = document.getElementById('inp-sexo');
+        const inpResultado = document.getElementById('inp-resultado');
+
+        const alunos = [];
+
+        function aluno() {    //cria um aluno
+
+
+            const nome = inpNome.value;
+            const ra = inpRA.value;
+            const idade = inpIdade.value;
+            const media = inpMedia.value;
+            const sexo = inpSexo.value;
+            const resultado = inpResultado.value;
+
+            if (nome === '' || ra === '' || idade === '' || media === '' || sexo === '(selecione)' || resultado === '(selecione)') {
+                alert('Preencha todos os campos!');
+                return;
+            }
+
+            alunos.push({   //cria um objeto aluno  
+                nome,
+                ra,
+                idade,
+                media,
+                sexo,
+                resultado
+            });
+
+
+            inpNome.value = '';
+            inpRA.value = '';
+            inpIdade.value = '';
+            inpMedia.value = '';
+            inpSexo.value = '(selecione)';
+            inpResultado.value = '(selecione)';
+            console.log(alunos);
+
+
+
+            for (let i = 0; i < alunos.length; i++) {  //cria uma tabela com os alunos
+
+                if (i === 0) {
+                    document.getElementById('conteudo-dinamico1').innerText = "";
+                }
+
+                const tr = document.createElement('tr');
+                const conteudo = document.getElementById('conteudo-dinamico1');
+                tr.setAttribute('id', 'idTr-' + i);
+
+                const thNome = document.createElement('th');
+                thNome.textContent = alunos[i].nome;
+                thNome.setAttribute('id', 'idNome-' + i);
+                tr.appendChild(thNome);
+
+                const thRA = document.createElement('th');
+                thRA.textContent = alunos[i].ra;
+                thRA.setAttribute('id', 'idRA-' + i);
+                tr.appendChild(thRA);
+
+                const thIdade = document.createElement('th');
+                thIdade.textContent = alunos[i].idade;
+                thIdade.setAttribute('id', 'idIdade-' + i);
+                tr.appendChild(thIdade);
+
+                const thMedia = document.createElement('th');
+                thMedia.textContent = alunos[i].media;
+                thMedia.setAttribute('id', 'idMedia-' + i);
+                tr.appendChild(thMedia);
+
+                const thSexo = document.createElement('th');
+                thSexo.textContent = alunos[i].sexo;
+                thSexo.setAttribute('id', 'idSexo-' + i);
+                tr.appendChild(thSexo);
+
+                const thResultado = document.createElement('th');
+                thResultado.textContent = alunos[i].resultado;
+                thResultado.setAttribute('id', 'idResultado-' + i);
+                tr.appendChild(thResultado);
+
+                conteudo.appendChild(tr);
+
+            }
+
+            return alunos;
+        }
+
+        function ordenarPorNome() {     //ordena alunos por nome
+
+            function bubblesort(alunos, fncompare) {
+                let swapped;
+                do {
+                    swapped = false;
+                    for (let i = 0; i < alunos.length - 1; i++) {
+                        if (fncompare(alunos[i], alunos[i + 1]) > 0) {
+                            [alunos[i], alunos[i + 1]] = [alunos[i + 1], alunos[i]];
+                            swapped = true;
+                        }
+                    }
+                } while (swapped);
+            }
+
+
+
+            bubblesort(alunos, (elem1, elem2) => {
+                if (elem1.nome === elem2.nome) {
+                    return elem1.ra > elem2.ra;
+                } else {
+                    return elem1.nome > elem2.nome;
+                }
+
+            });
+
+            for (let i = 0; i < alunos.length; i++) { //cria uma tabela com os alunos ordenados por nome
+
+                if (i === 0) {
+                    document.getElementById('conteudo-dinamico2').innerText = "";
+                }
+
+                const tr = document.createElement('tr');
+                const conteudo = document.getElementById('conteudo-dinamico2');
+                tr.setAttribute('id', 'idTr-' + i);
+
+                const thNome = document.createElement('th');
+                thNome.textContent = alunos[i].nome;
+                thNome.setAttribute('id', 'idNome-' + i);
+                tr.appendChild(thNome);
+
+                const thRA = document.createElement('th');
+                thRA.textContent = alunos[i].ra;
+                thRA.setAttribute('id', 'idRA-' + i);
+                tr.appendChild(thRA);
+
+                const thIdade = document.createElement('th');
+                thIdade.textContent = alunos[i].idade;
+                thIdade.setAttribute('id', 'idIdade-' + i);
+                tr.appendChild(thIdade);
+
+                const thMedia = document.createElement('th');
+                thMedia.textContent = alunos[i].media;
+                thMedia.setAttribute('id', 'idMedia-' + i);
+                tr.appendChild(thMedia);
+
+                const thSexo = document.createElement('th');
+                thSexo.textContent = alunos[i].sexo;
+                thSexo.setAttribute('id', 'idSexo-' + i);
+                tr.appendChild(thSexo);
+
+                const thResultado = document.createElement('th');
+                thResultado.textContent = alunos[i].resultado;
+                thResultado.setAttribute('id', 'idResultado-' + i);
+                tr.appendChild(thResultado);
+
+                conteudo.appendChild(tr);
+
+            }
+
+            console.log(alunos);
+
+
+        }
+
+
+
+        function ordenarPorRA() { // ordena por RA
+
+            function bubblesort(alunos, fncompare) {
+                let swapped;
+                do {
+                    swapped = false;
+                    for (let i = 0; i < alunos.length - 1; i++) {
+                        if (fncompare(alunos[i], alunos[i + 1]) > 0) {
+                            [alunos[i + 1], alunos[i]] = [alunos[i], alunos[i + 1]];
+                            swapped = true;
+                        }
+                    }
+                } while (swapped);
+            }
+
+            bubblesort(alunos, (elem1, elem2) => {
+                if (elem1.ra === elem2.ra) {
+                    return elem2.nome > elem1.nome;
+                } else {
+                    return elem2.ra > elem1.ra;
+                }
+
+            });
+
+            for (let i = 0; i < alunos.length; i++) {
+
+                if (i === 0) {
+                    document.getElementById('conteudo-dinamico3').innerText = "";
+                }
+
+                const tr = document.createElement('tr');
+                const conteudo = document.getElementById('conteudo-dinamico3');
+                tr.setAttribute('id', 'idTr-' + i);
+
+                const thNome = document.createElement('th');
+                thNome.textContent = alunos[i].nome;
+                thNome.setAttribute('id', 'idNome-' + i);
+                tr.appendChild(thNome);
+
+                const thRA = document.createElement('th');
+                thRA.textContent = alunos[i].ra;
+                thRA.setAttribute('id', 'idRA-' + i);
+                tr.appendChild(thRA);
+
+                const thIdade = document.createElement('th');
+                thIdade.textContent = alunos[i].idade;
+                thIdade.setAttribute('id', 'idIdade-' + i);
+                tr.appendChild(thIdade);
+
+                const thMedia = document.createElement('th');
+                thMedia.textContent = alunos[i].media;
+                thMedia.setAttribute('id', 'idMedia-' + i);
+                tr.appendChild(thMedia);
+
+                const thSexo = document.createElement('th');
+                thSexo.textContent = alunos[i].sexo;
+                thSexo.setAttribute('id', 'idSexo-' + i);
+                tr.appendChild(thSexo);
+
+                const thResultado = document.createElement('th');
+                thResultado.textContent = alunos[i].resultado;
+                thResultado.setAttribute('id', 'idResultado-' + i);
+                tr.appendChild(thResultado);
+
+                conteudo.appendChild(tr);
+
+            }
+            console.log(alunos);
+        }
+
+
+
+        function ordenarPorNomeAprovados() {
+
+            const alunosAprovados = alunos.filter(aluno => aluno.resultado === 'Aprovado');
+
+            function bubblesort(alunos, fncompare) {
+                let swapped;
+                do {
+                    swapped = false;
+                    for (let i = 0; i < alunos.length - 1; i++) {
+                        if (fncompare(alunos, alunos[i + 1]) > 0) {
+                            [alunos[i + 1], alunos[i]] = [alunos[i], alunos[i + 1]];
+                            swapped = true;
+                        }
+                    }
+                } while (swapped);
+            }
+
+            bubblesort(alunosAprovados, (elem1, elem2) => {
+                if (elem1.nome === elem2.nome) {
+                    return elem2.ra > elem1.ra;
+                } else {
+                    return elem2.nome > elem1.nome;
+                }
+
+            });
+
+            for (let i = 0; i < alunos.length; i++) {
+
+                if (i === 0) {
+                    document.getElementById('conteudo-dinamico4').innerText = "";
+                }
+
+                const tr = document.createElement('tr');
+                const conteudo = document.getElementById('conteudo-dinamico4');
+                tr.setAttribute('id', 'idTr-' + i);
+
+                const thNome = document.createElement('th');
+                thNome.textContent = alunosAprovados[i].nome;
+                thNome.setAttribute('id', 'idNome-' + i);
+                tr.appendChild(thNome);
+
+                const thRA = document.createElement('th');
+                thRA.textContent = alunosAprovados[i].ra;
+                thRA.setAttribute('id', 'idRA-' + i);
+                tr.appendChild(thRA);
+
+                const thIdade = document.createElement('th');
+                thIdade.textContent = alunosAprovados[i].idade;
+                thIdade.setAttribute('id', 'idIdade-' + i);
+                tr.appendChild(thIdade);
+
+                const thMedia = document.createElement('th');
+                thMedia.textContent = alunosAprovados[i].media;
+                thMedia.setAttribute('id', 'idMedia-' + i);
+                tr.appendChild(thMedia);
+
+                const thSexo = document.createElement('th');
+                thSexo.textContent = alunosAprovados[i].sexo;
+                thSexo.setAttribute('id', 'idSexo-' + i);
+                tr.appendChild(thSexo);
+
+                const thResultado = document.createElement('th');
+                thResultado.textContent = alunosAprovados[i].resultado;
+                thResultado.setAttribute('id', 'idResultado-' + i);
+                tr.appendChild(thResultado);
+
+                conteudo.appendChild(tr);
+
+            }
+        }
+
+        function windowclose() {
+            window.close();
+        }
+
+
+        btnPronto.addEventListener('click', aluno);
+        btnAlunos.addEventListener('click', ordenarPorNome);
+        btnAlunosRA.addEventListener('click', ordenarPorRA);
+        btnAlunosAprovados.addEventListener('click', ordenarPorNomeAprovados);
+        btnEncerrar.addEventListener('click', windowclose);
+
+
+    </script>
+</body>
+
+</html>
